@@ -213,10 +213,15 @@ def get_move3(arr, draw, hold, deck):
     if get_hand_value([*arr[2], draw]) == 21: return 3
     if get_hand_value([*arr[3], draw]) == 21: return 4
 
-    t1 = get_twenty_count(arr[0], draw, deck, 1) - get_busted_count(arr[0], draw, deck, 1)
-    t2 = get_twenty_count(arr[1], draw, deck, 1) - get_busted_count(arr[1], draw, deck, 1)
-    t3 = get_twenty_count(arr[2], draw, deck, 1) - get_busted_count(arr[2], draw, deck, 1)
-    t4 = get_twenty_count(arr[3], draw, deck, 1) - get_busted_count(arr[3], draw, deck, 1)
+    t1 = get_twenty_count(arr[0], draw, deck, 1)*1.5 - get_busted_count(arr[0], draw, deck, 1)
+    t2 = get_twenty_count(arr[1], draw, deck, 1)*1.5 - get_busted_count(arr[1], draw, deck, 1)
+    t3 = get_twenty_count(arr[2], draw, deck, 1)*1.5 - get_busted_count(arr[2], draw, deck, 1)
+    t4 = get_twenty_count(arr[3], draw, deck, 1)*1.5 - get_busted_count(arr[3], draw, deck, 1)
+
+    if get_hand_value([*arr[0], draw]) > 21: t1 -= 999999
+    if get_hand_value([*arr[1], draw]) > 21: t2 -= 999999
+    if get_hand_value([*arr[2], draw]) > 21: t3 -= 999999
+    if get_hand_value([*arr[3], draw]) > 21: t4 -= 999999
 
     minT = min(t1,t2,t3,t4)
     maxT = max(t1,t2,t3,t4)
