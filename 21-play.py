@@ -35,7 +35,7 @@ def play():
     streaks = -1
     all_buckets = [[], [], [], []]
 
-    while len(deck) > 0:
+    while len(deck) > 0 and lives != 0:
         # Draw next card
         card = deck.pop()
         print('Card:', card)
@@ -93,10 +93,6 @@ def play():
         print(colored(all_buckets, 'blue'))
         print(colored('Deck','red'), colored(deck, 'red'))
         print('Score:', score)
-
-        if lives == 0:
-            break
-
         print('----------------------------')
 
     # Bonus +250 if bust free
@@ -104,9 +100,9 @@ def play():
 
     # Result
     print('----------Result------------')
+    print('Lives:', lives)
     print('Score:', score)
     print('Bonus (bust free):', bust_free_bonus)
     print('Total score:', score + bust_free_bonus)
-    print('Lives:', lives)
 
 play()
