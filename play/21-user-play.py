@@ -3,30 +3,25 @@ os.system('color')
 from termcolor import colored
 import random
 
+import sys 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from utils.common import get_hand_value
+
 TWENTY_ONE_SCORE = 500
 FIVE_CARDS_SCORE = 750
 JOKER_DESTROY_SCORE = 250
 BASE_BONUS = 300
 BUST_FREE_BONUS = 250
 
-# A = 1 or 11
-def get_hand_value(hand):
-    num_aces = sum([n for n in hand if n == 1])
-    non_ace_total = sum([n for n in hand if n != 1])
-    if num_aces > 0:
-        if non_ace_total + 11 + (num_aces - 1)*1 <= 21:
-            ace_value = 11 + (num_aces - 1)*1
-        else:
-            ace_value = num_aces*1
-    else:
-        ace_value = 0
-    hand_total = non_ace_total + ace_value
-    return hand_total
-
-
 def play():
     # 0 = Joker/Wild Card | 1 = Ace | 10 = 10, J, Q, K
-    deck = 2*[0] + 4*[1] + 4*[2] + 4*[3] + 4*[4] + 4*[5] + 4*[6] + 4*[7] + 4*[8] + 4*[9] + 4*4*[10]
+    deck = 4*[1] + 4*[2] + 4*[3] + 4*[4] + 4*[5] + 4*[6] + 4*[7] + 4*[8] + 4*[9] + 4*4*[10]
+
+    # Convert 2 random cards into Jokers
+    i1, i2 = random.sample(range(0, len(deck)), 2)
+    deck[i1] = 0
+    deck[i2] = 0
     
     random.shuffle(deck)
 
@@ -35,7 +30,7 @@ def play():
     streaks = -1
     all_buckets = [[], [], [], []]
 
-    while len(deck) > 0:
+    while len(deck) > 0 and lives != 0:
         # Draw next card
         card = deck.pop()
         print('Card:', card)
@@ -93,20 +88,17 @@ def play():
         print(colored(all_buckets, 'blue'))
         print(colored('Deck','red'), colored(deck, 'red'))
         print('Score:', score)
-
-        if lives == 0:
-            break
-
         print('----------------------------')
 
     # Bonus +250 if bust free
     bust_free_bonus = BUST_FREE_BONUS if lives == 3 else 0
+    total_score = score + bust_free_bonus
 
     # Result
     print('----------Result------------')
+    print('Lives:', lives)
     print('Score:', score)
     print('Bonus (bust free):', bust_free_bonus)
-    print('Total score:', score + bust_free_bonus)
-    print('Lives:', lives)
+    print('Total score:', total_score)
+    return total_score
 
-play()
